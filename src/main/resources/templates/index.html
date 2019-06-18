@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Inrhythm Aquatic Store</title>
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{../../static/main.css}" />
+
+    <style>
+        body {
+          padding-top: 5rem;
+        }
+        .starter-template {
+          padding: 3rem 1.5rem;
+          text-align: center;
+        }
+
+        h1{
+            color:#0000FF;
+        }
+
+        h2{
+            color:#FF0000;
+        }
+
+        h4{
+            color: red;
+        }
+        .card-additional{
+            max-width: 50%;
+            margin: 10px auto 10px auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Welcome to the Aquatic store</a>
+</nav>
+
+<main role="main" class="container">
+
+
+    <div class="row">
+        <div class="card card-additional" th:each="product : ${products}">
+            <div class="card-body">
+                <h4 class="card-title" th:text="${product.name}"></h4>
+                <img th:src="${product.pictureUrl}" height="150" width="150">
+                <p th:text="${product.description}">Description: </p>
+                <hr/>
+                <h5 th:text="${product.price}">Price: </h5>
+                <a th:href="@{'/details/'+${product.id}}"> More Details </a>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>
