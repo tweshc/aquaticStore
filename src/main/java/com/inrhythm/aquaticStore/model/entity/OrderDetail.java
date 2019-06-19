@@ -1,10 +1,7 @@
 package com.inrhythm.aquaticStore.model.entity;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -35,5 +32,9 @@ public class OrderDetail {
     @NotNull(message = "Product price is required.")
     @SerializedName("price")
     private double price;
+
+    public void incrementQuantity(){
+        this.quantity ++;
+    }
 
 }
