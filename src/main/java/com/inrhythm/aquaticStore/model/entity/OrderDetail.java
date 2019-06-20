@@ -1,27 +1,19 @@
 package com.inrhythm.aquaticStore.model.entity;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.*;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
+@Getter @Setter
 @ToString
-@Data
-@Document(collection = "orderDetail")
 public class OrderDetail {
 
-    @SerializedName("id")
-    private String id;
+    @SerializedName("pictureUrl")
+    private String pictureUrl;
 
-    /*
-     * Order order
-     */
-
-    @DBRef
     @SerializedName("product")
     private Product product;
 

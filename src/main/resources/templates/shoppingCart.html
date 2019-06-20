@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Inrhythm Aquatic Store</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+</head>
+
+
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/">Welcome to the Aquatic store</a>
+        <a class="navbar-brand" href="/shoppingCart">Shopping Cart</a>
+    </nav>
+
+    <div class="container">
+        <h1>Customer Table</h1>
+        <div class="row col-md-7 table-responsive">
+            <table id="customerTable" class="table">
+                <thead>
+                <tr>
+                    <th>product</th>
+                    <th>preview</th>
+                    <th>quantity</th>
+                    <th>price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderDetail, rowStat: ${orderDetails}"
+                    th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
+                    <td th:text="${orderDetail.product.name}">1</td>
+                    <td>
+                        <img th:src="${orderDetail.pictureUrl}" height="100" width="100"/>
+                    </td>
+                    <td th:text="${orderDetail.quantity}">23
+                        <form method="POST" th:action="@{'/decrement/'+${orderDetail.product.name}}">
+                            <button type="submit" name="submit" value="value" class="link-button">This is a link that sends a POST request</button>
+                        </form>
+                    </td>
+                    <td th:text="${orderDetail.price}">AVE N</td>
+                </tr>
+                </tbody>
+                <form action="#" th:action="@{/submitOrder}" method="get">
+                    <p><input type="submit" value="Submit" />
+                </form>
+            </table>
+        </div>
+        <div class = "container">
+            <div> Your Cart Total: </div>
+            <div class="total" th:text="${total}"></div>
+        </div>
+    </div>
+</body>
+</html>

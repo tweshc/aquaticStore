@@ -1,7 +1,7 @@
 package com.inrhythm.aquaticStore.controller;
 
-import com.inrhythm.aquaticStore.model.entity.OrderDetail;
 import com.inrhythm.aquaticStore.model.entity.Product;
+import com.inrhythm.aquaticStore.service.CartService;
 import com.inrhythm.aquaticStore.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +18,16 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductService service;
+    ProductService productService;
+
+    @Autowired
+    CartService cartService;
 
     @GetMapping(value = { "" , "/", "/welcome" })
     public String home(Model model){
 
         List<Product> productsList = new ArrayList<>();
-        service.getAllProducts().forEach(productsList::add);
+        productService.getAllProducts().forEach(productsList::add);
 
         model.addAttribute("products", productsList);
 
@@ -36,7 +38,7 @@ public class ProductController {
     public String details(Model model, @PathVariable String productId){
 
         log.info("/details/" + productId);
-        Product product = service.findById(productId);
+        Product product = productService.findById(productId);
 
         model.addAttribute("id", product.getId());
         model.addAttribute("name", product.getName());
@@ -51,25 +53,23 @@ public class ProductController {
         return "productDetails";
     }
 
+    @GetMapping(value = {"/submitOrder"})
+    public String submitOrder(Model model){
+        log.info(productService.cart.getOrderDetails().toString());
+
+        cartService.save(productService.cart);
+        return home(model);
+    }
+
     @GetMapping(value = { "/shoppingCart/{productId}" })
-    public String shoppingCart(HttpServletRequest request, Model model, @PathVariable String productId){
+    public String shoppingCart(Model model, @PathVariable String productId){
 
         log.info("/shoppingCart/" + productId);
-        Product product = service.findById(productId);
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setProduct(product);
-        orderDetail.setPrice(product.getPrice());
-        orderDetail.setQuantity(1);
+        Product product = productService.findById(productId);
 
-        model.addAttribute("name", product.getName());
-        model.addAttribute("price", product.getPrice());
-        model.addAttribute("careLevel", product.getCareLevel());
-        model.addAttribute("temperament", product.getTemperament());
-        model.addAttribute("venemous", product.getVenemous());
-        model.addAttribute("minimumTankSize", product.getMinimumTankSize());
-        model.addAttribute("description", product.getDescription());
-        model.addAttribute("pictureUrl", "/"+product.getPictureUrl());
+        productService.addToCart(product, model);
 
-        return "productDetails";
+        //If the product being added to the cart has already been added before
+        return "shoppingCart";
     }
 }
