@@ -1,6 +1,6 @@
 package com.inrhythm.aquaticStore.service;
 
-import com.inrhythm.aquaticStore.model.entity.ShoppingCart;
+import com.inrhythm.aquaticStore.model.ShoppingCart;
 import com.inrhythm.aquaticStore.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

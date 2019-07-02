@@ -73,7 +73,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>AquaticStore-IR-TC</finalName>
+		<finalName>aquaticstore</finalName>
 	</build>
 
 </project>

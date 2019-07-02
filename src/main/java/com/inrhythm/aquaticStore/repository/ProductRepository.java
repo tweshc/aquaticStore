@@ -1,6 +1,6 @@
 package com.inrhythm.aquaticStore.repository;
 
-import com.inrhythm.aquaticStore.model.entity.Product;
+import com.inrhythm.aquaticStore.model.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

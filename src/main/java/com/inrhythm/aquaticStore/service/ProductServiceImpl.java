@@ -1,11 +1,14 @@
 package com.inrhythm.aquaticStore.service;
 
-import com.inrhythm.aquaticStore.model.entity.OrderDetail;
-import com.inrhythm.aquaticStore.model.entity.Product;
-import com.inrhythm.aquaticStore.model.entity.ShoppingCart;
+import com.inrhythm.aquaticStore.model.OrderDetail;
+import com.inrhythm.aquaticStore.model.Product;
+import com.inrhythm.aquaticStore.model.ShoppingCart;
 import com.inrhythm.aquaticStore.repository.ProductRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -19,6 +22,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public Iterable<Product> getAllProducts() {
@@ -74,5 +80,33 @@ public class ProductServiceImpl implements ProductService{
             total = total + od.getPrice();
         }
         return Math.round(total * 100.0) / 100.0;
+    }
+
+    @Override
+    public List<Product> filterProductsDouble(String field, String filter, Double amount){
+
+        Query query = new Query();
+
+        if(filter.equals("lt"))
+            query.addCriteria(Criteria.where(field).lt(amount));
+        else if(filter.equals("lte"))
+            query.addCriteria(Criteria.where(field).lte(amount));
+        else if(filter.equals("gt"))
+            query.addCriteria(Criteria.where(field).gt(amount));
+        else if(filter.equals("gte"))
+            query.addCriteria(Criteria.where(field).gte(amount));
+        else if(filter.equals("is"))
+            query.addCriteria(Criteria.where(field).is(amount));
+
+
+        return mongoTemplate.find(query, Product.class);
+    }
+
+    @Override
+    public List<Product> filterProductsString(String field, String value) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(field).is(value));
+
+        return mongoTemplate.find(query, Product.class);
     }
 }

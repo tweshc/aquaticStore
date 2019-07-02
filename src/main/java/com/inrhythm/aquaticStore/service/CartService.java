@@ -1,6 +1,6 @@
 package com.inrhythm.aquaticStore.service;
 
-import com.inrhythm.aquaticStore.model.entity.ShoppingCart;
+import com.inrhythm.aquaticStore.model.ShoppingCart;
 
 public interface CartService {
     public Iterable<ShoppingCart> getAllCarts();

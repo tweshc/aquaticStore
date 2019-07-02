@@ -1,4 +1,4 @@
-package com.inrhythm.aquaticStore.model.entity;
+package com.inrhythm.aquaticStore.model;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
