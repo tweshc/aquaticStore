@@ -62,6 +62,7 @@ public class ProductController {
         log.info(productService.cart.getOrderDetails().toString());
 
         cartService.save(productService.cart);
+        productService.cart.clearCart();
         return home(model);
     }
 

@@ -2,7 +2,6 @@ package com.inrhythm.aquaticStore.service;
 
 import com.inrhythm.aquaticStore.model.OrderDetail;
 import com.inrhythm.aquaticStore.model.Product;
-import com.inrhythm.aquaticStore.model.ShoppingCart;
 import com.inrhythm.aquaticStore.repository.ProductRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class ProductServiceImpl implements ProductService{
         for(OrderDetail od : cart.getOrderDetails()){
             if(product.getName().equals(od.getProduct().getName())) {
                 incrementQuantitySetPrice(od, product);
-                cart.getOrderDetails().add(od);
+                //cart.getOrderDetails().add(od);
                 List<OrderDetail> noDuplicates = cart.getOrderDetails().stream().distinct().collect(Collectors.toList());
                 model.addAttribute("orderDetails", noDuplicates);
                 model.addAttribute("total", calculateTotal(noDuplicates));
@@ -63,10 +62,10 @@ public class ProductServiceImpl implements ProductService{
         incrementQuantitySetPrice(orderDetail, product);
         cart.getOrderDetails().add(orderDetail);
         List<OrderDetail> noDuplicates = cart.getOrderDetails().stream().distinct().collect(Collectors.toList());
+        cart.setCartTotal(calculateTotal(noDuplicates));
         model.addAttribute("orderDetails", noDuplicates);
         model.addAttribute("total", calculateTotal(noDuplicates));
-        ShoppingCart cart2 = cart;
-        model.addAttribute("shoppingCart", cart2);
+        model.addAttribute("shoppingCart", cart);
     }
 
     private void incrementQuantitySetPrice(OrderDetail od, Product product){

@@ -22,4 +22,11 @@ public class ShoppingCart {
     @SerializedName("orderDetails")
     List<OrderDetail> orderDetails = new ArrayList<>();
 
+    @SerializedName("cartTotal")
+    private Double cartTotal;
+
+    public void clearCart(){
+        this.orderDetails = new ArrayList<>();
+    }
+
 }
