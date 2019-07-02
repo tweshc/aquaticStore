@@ -21,6 +21,11 @@ public class ShoppingCartController {
     @Autowired
     ProductService productService;
 
+    /**
+     * returns a list of {@link ShoppingCart} - all orders that have been submitted
+     * @param cart
+     * @return
+     */
     @GetMapping(value = {"/carts/findAll"})
     public List<ShoppingCart> submitOrder(ShoppingCart cart){
         List<ShoppingCart> carts = new ArrayList<>();
@@ -48,9 +53,9 @@ public class ShoppingCartController {
 
     /**
      * example GET /filterString/products/temperament?value=peaceful
-     * @param field
-     * @param value
-     * @return
+     * @param field name of property within {@link Product}
+     * @param value value of property of field
+     * @return list of products that match this filter
      */
     @GetMapping(
             value = "/filterString/products/{field}",

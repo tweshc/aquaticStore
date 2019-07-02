@@ -2,6 +2,7 @@ package com.inrhythm.aquaticStore.service;
 
 import com.inrhythm.aquaticStore.model.OrderDetail;
 import com.inrhythm.aquaticStore.model.Product;
+import com.inrhythm.aquaticStore.model.ShoppingCart;
 import com.inrhythm.aquaticStore.repository.ProductRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,17 @@ public class ProductServiceImpl implements ProductService{
         return repository.save(product);
     }
 
+    /**
+     * Adds product to cart. if There is already a product in the cart with the same name {@link Product#getName()}
+     * then it will not add it to the cart, instead it will increment the quantity by one.
+     * @param product
+     * @param model
+     */
     @Override
     public void addToCart(Product product, Model model) {
         for(OrderDetail od : cart.getOrderDetails()){
             if(product.getName().equals(od.getProduct().getName())) {
                 incrementQuantitySetPrice(od, product);
-                //cart.getOrderDetails().add(od);
                 List<OrderDetail> noDuplicates = cart.getOrderDetails().stream().distinct().collect(Collectors.toList());
                 model.addAttribute("orderDetails", noDuplicates);
                 model.addAttribute("total", calculateTotal(noDuplicates));
@@ -68,11 +74,24 @@ public class ProductServiceImpl implements ProductService{
         model.addAttribute("shoppingCart", cart);
     }
 
+    /**
+     * increment quantity of the given product in the Order Detail object and set the price by multiplying unit price
+     * by quantity
+     *
+     * @param od
+     * @param product
+     */
     private void incrementQuantitySetPrice(OrderDetail od, Product product){
         od.incrementQuantity();
         od.setPrice(Math.round(product.getPrice() * od.getQuantity() * 100.0)/100.0);
     }
 
+    /**
+     * This method is used to calculate the cart total. It iterates through the List of Order Detail see
+     * {@link ShoppingCart#getOrderDetails()} and adds all the prices of each Order Detail obj to calculate a grand total
+     * @param list
+     * @return
+     */
     private Double calculateTotal(List<OrderDetail> list){
         Double total = 0.0;
         for(OrderDetail od : list){

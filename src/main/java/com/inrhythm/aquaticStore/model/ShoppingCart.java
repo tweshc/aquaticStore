@@ -26,7 +26,7 @@ public class ShoppingCart {
     private Double cartTotal;
 
     public void clearCart(){
-        this.orderDetails = new ArrayList<>();
+        this.orderDetails.clear();
     }
 
 }
